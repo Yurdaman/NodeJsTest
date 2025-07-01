@@ -15,6 +15,12 @@ pipeline {
             }
         }
 
+        stage('Install Playwright browsers') {
+            steps {
+                bat 'npx playwright install'
+            }
+        }
+
         stage('Lint') {
             steps {
                 bat 'npm run lint'
@@ -29,13 +35,8 @@ pipeline {
 
         stage('Run End-to-End Tests') {
             steps {
-                // Запускаем сервер в фоне
                 bat 'start /b npm start'
-
-                // Ждем ~5 секунд, используя ping вместо timeout
                 bat 'ping 127.0.0.1 -n 6 > nul'
-
-                // Запускаем e2e тесты
                 bat 'npm run test:e2e'
             }
         }
@@ -45,11 +46,5 @@ pipeline {
                 bat 'npm run check-links'
             }
         }
-
-        // stage('Deploy') {
-        //     steps {
-        //         echo 'Deploying to production...'
-        //     }
-        // }
     }
 }
