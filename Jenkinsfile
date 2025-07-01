@@ -10,44 +10,41 @@ pipeline {
 
         stage('Install dependencies') {
             steps {
-                sh 'node -v'
-                sh 'npm install'
+                bat 'node -v'
+                bat 'npm install'
             }
         }
 
         stage('Lint') {
             steps {
-                sh 'npm run lint'
+                bat 'npm run lint'
             }
         }
 
         stage('Run Unit Tests') {
             steps {
-                sh 'npm run test:unit'
+                bat 'npm run test:unit'
             }
         }
 
         stage('Run End-to-End Tests') {
             steps {
-                // Запуск сервера в фоне
-                sh 'npm start &'
-                // Ждём, пока сервер запустится
-                sh 'sleep 5'
-                // Запуск E2E тестов
-                sh 'npm run test:e2e'
+                // Запуск сервера в фоне и ожидание (Windows PowerShell)
+                bat 'start /b npm start'
+                bat 'timeout /t 5 /nobreak'
+                bat 'npm run test:e2e'
             }
         }
 
         stage('Check for Broken Links') {
             steps {
-                sh 'npm run check-links'
+                bat 'npm run check-links'
             }
         }
 
         // stage('Deploy') {
         //     steps {
         //         echo 'Deploying to production...'
-        //         // Здесь можно добавить шаги деплоя
         //     }
         // }
     }
