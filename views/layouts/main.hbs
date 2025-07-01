@@ -1,16 +1,32 @@
-<html>
-  <head>
-    <title>Meadowlark Travel</title>
-  </head>
-  <body>
-    <header>
-      <img
-        src="/img/fav.png"
-        alt="Meadowlark Travel Logo"
-        height="100"
-        width="100"
-      />
-    </header>
+<head>
+ 
+ <title>Meadowlark Travel</title>
+        {{#if showTests}}
+ <link rel="stylesheet" href="/vendor/mocha.css">
+        {{/if}}
+ </head>
+
+  
+
     {{{body}}}
-  </body>
-</html>
+
+
+ {{#if showTests}}
+ <div id="mocha"></div>
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+ <script src="/vendor/mocha.js"></script>
+ <script src="https://unpkg.com/chai@4.3.6/chai.js"></script>
+ <script> 
+ 
+ mocha.ui('tdd');
+ </script>
+ <script src="/qa/tests-global.js"></script>
+
+ {{#if pageTestScript}}
+ <script src="{{pageTestScript}}"></script>
+                {{/if}}
+ <script>
+        window.addEventListener('load', function () { mocha.run(); });
+     </script>
+        {{/if}}
+ </body>

@@ -19,13 +19,35 @@ setupHandlebars(app);
 app.use(express.static(__dirname + "/public"));
 app.use(cors());
 
+app.use(function (req, res, next) {
+  res.locals.showTests =
+    app.get("env") !== "production" && req.query.test === "1";
+  console.log("Tests enabled:", res.locals.showTests, "for URL:", req.url); // Добавь эту строку
+  next();
+});
+
 app.get("/", function (req, res) {
   res.render("home");
 });
 
 app.get("/about", function (req, res) {
   var randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
-  res.render("about", { fortune: randomFortune });
+  res.render("about", {
+    fortune: randomFortune,
+    pageTestScript: "/qa/tests-about.js",
+  });
+});
+
+app.get("/tours/hood-river", (req, res) => {
+  res.render("tours/hood-river");
+});
+
+app.get("/tours/oregon-coast", (req, res) => {
+  res.render("tours/oregon-coast");
+});
+
+app.get("/tours/request-group-rate", (req, res) => {
+  res.render("tours/request-group-rate");
 });
 
 // custom 404 page
