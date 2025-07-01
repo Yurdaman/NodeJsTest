@@ -29,9 +29,13 @@ pipeline {
 
         stage('Run End-to-End Tests') {
             steps {
-                // Запуск сервера в фоне и ожидание (Windows PowerShell)
+                // Запускаем сервер в фоне
                 bat 'start /b npm start'
-                bat 'timeout /t 5 /nobreak'
+
+                // Ждем ~5 секунд, используя ping вместо timeout
+                bat 'ping 127.0.0.1 -n 6 > nul'
+
+                // Запускаем e2e тесты
                 bat 'npm run test:e2e'
             }
         }
