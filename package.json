@@ -13,7 +13,7 @@
     "test:e2e": "mocha qa/tests-crosspage.mjs --experimental-modules",
     "test:all": "npm run test && npm run test:unit && npm run test:e2e",
     "check-links": "blc http://localhost:3000 --filter-level 3"
-  },git add package.json
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
