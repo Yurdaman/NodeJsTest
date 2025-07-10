@@ -23,6 +23,9 @@ jobs:
       - name: 📦 Устанавливаем зависимости
         run: npm install
 
+      - name: ⚙️ Устанавливаем браузеры Playwright
+        run: npx playwright install
+
       - name: 🔍 Линтим код
         run: npm run lint
 
