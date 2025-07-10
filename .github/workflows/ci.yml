@@ -29,13 +29,23 @@ jobs:
       - name: 🔍 Линтим код
         run: npm run lint
 
+      - name: 🚀 Запускаем сервер в фоне
+        run: nohup npm start &
+
+      - name: ⏳ Ждём запуска сервера
+        run: |
+          for i in {1..30}; do
+            if curl -s http://localhost:3000 > /dev/null; then
+              echo "Server is up!"
+              break
+            else
+              echo "Waiting for server to start..."
+              sleep 1
+            fi
+          done
+
       - name: 🧪 Запускаем все тесты
         run: npm run test:all
-
-      - name: 🚀 Запускаем сервер в фоне
-        run: |
-          nohup npm start &
-          sleep 5
 
       - name: 🔗 Проверяем ссылки
         run: npm run check-links
