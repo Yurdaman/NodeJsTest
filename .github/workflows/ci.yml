@@ -11,52 +11,50 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Клонируем репозиторий
+      - name: 📥 Checkout code
         uses: actions/checkout@v3
 
-      - name: 🟢 Устанавливаем Node.js
+      - name: 🟢 Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "18"
           cache: "npm"
 
-      - name: 📦 Устанавливаем зависимости
+      - name: 📦 Install dependencies
         run: npm install
 
-      - name: 🔍 Проверяем структуру проекта (для отладки)
-        run: ls -la
-
-      - name: 🚀 Запускаем сервер
+      - name: 🚀 Start server
         run: |
           npm start &> server.log &
           echo $! > server.pid
-          sleep 5
+          sleep 10
 
-      - name: ⏳ Ждём запуска сервера
+      - name: ⏳ Wait for server
         run: |
-          for i in {1..15}; do
+          for i in {1..20}; do
             if curl -s http://localhost:3000 > /dev/null; then
-              echo "✅ Сервер запущен!"
+              echo "✅ Server is running!"
               exit 0
             fi
-            echo "⌛ Попытка $i/15: сервер не отвечает..."
-            sleep 2
+            echo "⌛ Waiting for server... Attempt $i/20"
+            sleep 3
           done
-          echo "❌ Сервер не запустился"
+          echo "❌ Server failed to start"
           cat server.log
           exit 1
 
-      - name: � Запускаем тесты
-        run: npm run test:all
+      - name: 🧪 Run tests
+        run: npm run test:ci
 
-      - name: 📜 Логи сервера
+      - name: 📜 Server logs
         if: always()
         run: |
-          echo "=== ЛОГИ СЕРВЕРА ==="
-          cat server.log || echo "Логи не найдены"
+          echo "=== SERVER LOGS ==="
+          cat server.log || echo "No server logs found"
           echo "==================="
 
-      - name: 🛑 Останавливаем сервер
+      - name: 🛑 Stop server
         if: always()
         run: |
-          kill $(cat server.pid) || echo "Не удалось остановить сервер"
+          kill $(cat server.pid) || echo "Failed to stop server"
+          npx playwright uninstall || echo "Playwright uninstall failed"
