@@ -8,12 +8,12 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "lint": "eslint . --ext .js",
-    "test": "mocha public/qa/tests-crosspage.js",
+    "test": "mocha qa/tests-crosspage.mjs --experimental-modules",
     "test:unit": "mocha qa/tests-unit.js",
     "test:e2e": "mocha qa/tests-crosspage.mjs --experimental-modules",
     "test:all": "npm run test && npm run test:unit && npm run test:e2e",
     "check-links": "blc http://localhost:3000 --filter-level 3"
-  },
+  },git add package.json
   "keywords": [],
   "author": "",
   "license": "ISC",
