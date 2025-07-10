@@ -5,8 +5,8 @@
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start": "node meadowlark.js",
+    "dev": "nodemon meadowlark.js",
     "lint": "eslint . --ext .js",
     "test": "mocha qa/tests-crosspage.mjs --experimental-modules",
     "test:unit": "mocha qa/tests-unit.js",
